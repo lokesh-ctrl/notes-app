@@ -13,14 +13,13 @@ const app = express();
 const schema = buildSchema(`
   type Query {
     hello: String
-  }
-`);
+  }`);
 
 // The root provides a resolver function for each API endpoint
 const root = {
     hello: () => {
-        return 'Hello world!';
-    },
+        return "Hello world!";
+    }
 };
 
 app.use(logger("dev"));
@@ -28,10 +27,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-}));
+app.use(
+    "/graphql",
+    graphqlHTTP({
+        schema: schema,
+        rootValue: root,
+        graphiql: true
+    })
+);
 
 export default app;
