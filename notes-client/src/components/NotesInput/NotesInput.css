@@ -1,0 +1,13 @@
+.input-width {
+    width: 30%;
+    border: none;
+}
+
+.color{
+    color: aliceblue;
+}
+.input-padding {
+    padding-left: 10px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
