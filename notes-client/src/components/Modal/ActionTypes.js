@@ -1,0 +1,1 @@
+export const MODAL_STATE_CHANGE = "MODAL_STATE_CHANGE";

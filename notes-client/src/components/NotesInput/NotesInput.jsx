@@ -4,7 +4,6 @@ import "element-theme-default";
 import "./NotesInput.css";
 import {connect} from "react-redux";
 import {changeInputViewMode} from "./Actions";
-import _ from "lodash";
 
 export class NotesInput extends React.Component {
     state = {notesInputClick: false, taskInput: false, tasks: []};
