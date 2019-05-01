@@ -1,31 +1,26 @@
-import React, { Component } from "react";
+import React from "react";
 import Grid from "./Grid";
+import {Query} from "react-apollo";
+import gql from "graphql-tag";
 
-export default class GridContainer extends Component {
-	render() {
-		const notes = [
-			{
-				title: "Task1",
-				description: "1 desc",
-				isTask: true
-			},
-			{
-				title: "Task2",
-				description: "2 desc",
-				isTask: false
-			},
-			{
-				title: "Task3",
-				description: "3 desc",
-				isTask: true
-			},
-			{
-				title: "Task4",
-				description: "4 desc",
-				isTask: false
-			}
-		];
-
-		return <Grid notes={notes} />;
-	}
+export default function GridContainer() {
+    return (
+        <Query
+            query={gql`
+				query getAllNotes {
+					getNotes {
+						title
+						description
+						isTask
+					}
+				}
+			`}
+        >
+            {({loading, error, data}) => {
+                if (loading) return <p>Loading...</p>;
+                if (error) return <p>Error :(</p>;
+                return <Grid notes={data.getNotes}/>;
+            }}
+        </Query>
+    );
 }
