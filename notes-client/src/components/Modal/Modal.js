@@ -13,7 +13,6 @@ class Modal extends React.Component {
 	};
 
 	render() {
-		console.log(this.props);
 		if (this.props.isModalOpen) {
 			return (
 				<ModalDialog>

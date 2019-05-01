@@ -5,7 +5,6 @@ export default (
         modalData: {isOpen: false}
     },
     action) => {
-    console.log(action);
     switch (action.type) {
         case ACTION_TYPES.MODAL_STATE_CHANGE:
             return {...state, modalData: action.payload};
