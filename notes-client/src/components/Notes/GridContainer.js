@@ -9,6 +9,7 @@ export default function GridContainer() {
             query={gql`
 				query getAllNotes {
 					getNotes {
+					    id
 						title
 						description
 						isTask

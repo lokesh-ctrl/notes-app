@@ -26,12 +26,9 @@ export const typeDefs = gql`
 		getTask(id: ID!): Task
 	}
 	type Mutation {
-		addNote(
-			title: String!
-			description: String!
-			isTask: Boolean
-		): Note
+		addNote(title: String!, description: String!, isTask: Boolean): Note
 		addTask(title: String!, isCompleted: Boolean!): Task
+		deleteNote(id: String!): Task
 	}
 `;
 
@@ -53,6 +50,13 @@ export const resolvers = {
 		addTask: async (_, args) => {
 			try {
 				return await Task.create(args);
+			} catch (e) {
+				return e.message;
+			}
+		},
+		deleteNote: async (_, args) => {
+			try {
+				return await Note.findByIdAndDelete(args.id);
 			} catch (e) {
 				return e.message;
 			}

@@ -4,9 +4,27 @@ import "element-theme-default";
 import "./NotesInput.css";
 import {connect} from "react-redux";
 import {changeInputViewMode} from "./Actions";
+import gql from "graphql-tag";
+import {Mutation} from "react-apollo";
+
+const ADD_NOTE = gql`
+	mutation AddNote($title: String!, $description: String!) {
+		addNote(title: $title, description: $description) {
+			id
+			title
+			description
+		}
+	}
+`;
 
 export class NotesInput extends React.Component {
-    state = {notesInputClick: false, taskInput: false, tasks: []};
+    state = {
+        notesInputClick: false,
+        taskInput: false,
+        tasks: [],
+        title: "",
+        description: ""
+    };
 
     onClick = () => {
         this.props.changeInputViewMode("notes");
@@ -19,6 +37,15 @@ export class NotesInput extends React.Component {
         this.props.changeInputViewMode("task");
     };
 
+    onTitleChange = value => {
+        this.setState({title: value});
+    };
+
+    onDescriptionChange = value => {
+        console.log(value);
+        this.setState({description: value});
+    };
+
     renderTaskInput = () => {
         return (
             <div>
@@ -27,8 +54,15 @@ export class NotesInput extends React.Component {
                         <Input className="input-width" placeholder="Title"/>
                     </div>
                     <div/>
-                    <Button className="color" type="text" onClick={this.onCloseClick}>
+                    <Button type="text" onClick={this.onCloseClick}>
                         Close
+                    </Button>
+                    <Button
+                        className="blue"
+                        type="text"
+                        onClick={this.onSubmitClick}
+                    >
+                        Add
                     </Button>
                 </div>
             </div>
@@ -36,10 +70,16 @@ export class NotesInput extends React.Component {
     };
 
     renderBoxInput = () => {
+        const title = this.state.title.toString();
+        const description = this.state.description.toString();
         return (
             <div>
                 <div>
-                    <Input className="input-width" placeholder="Title"/>
+                    <Input
+                        className="input-width"
+                        placeholder="Title"
+                        onChange={this.onTitleChange}
+                    />
                 </div>
                 <div>
                     <Input
@@ -47,11 +87,24 @@ export class NotesInput extends React.Component {
                         className="input-width"
                         autoFocus={true}
                         placeholder="Take a note..."
+                        onChange={this.onDescriptionChange}
                     />
                 </div>
-                <Button className="color" type="text" onClick={this.onCloseClick}>
+                <Button
+                    className="color"
+                    type="text"
+                    onClick={this.onCloseClick}
+                >
                     Close
                 </Button>
+                <Mutation
+                    mutation={ADD_NOTE}
+                    variables={{title, description}}
+                    onCompleted={console.log("Completed")}
+                    onError={console.log("error")}
+                >
+                    {addNote => <Button onClick={addNote}>Add</Button>}
+                </Mutation>
             </div>
         );
     };

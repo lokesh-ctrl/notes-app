@@ -3,6 +3,16 @@ import { ModalBody, ModalDialog, ModalFooter } from "react-bootstrap";
 import { Button } from "element-react";
 import { changeModalState } from "./Actions";
 import { connect } from "react-redux";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
+const DELETE_NOTE = gql`
+	mutation DeleteNote($id: String!) {
+		deleteNote(id: $id) {
+			id
+		}
+	}
+`;
 
 class Modal extends React.Component {
 	onCloseClick = () => {
@@ -14,6 +24,7 @@ class Modal extends React.Component {
 
 	render() {
 		if (this.props.isModalOpen) {
+			const id = this.props.modalData.id;
 			return (
 				<ModalDialog>
 					<h4>{this.props.modalData.title}</h4>
@@ -28,9 +39,18 @@ class Modal extends React.Component {
 						<Button color="primary" onClick={this.onSaveClick}>
 							Save
 						</Button>
-						<Button color="red" onClick={this.onSaveClick}>
-							Delete
-						</Button>
+						<Mutation
+							mutation={DELETE_NOTE}
+							variables={{ id }}
+							onCompleted={console.log("Completed")}
+							onError={console.log("error")}
+						>
+							{deleteNote => (
+								<Button color="red" onClick={deleteNote}>
+									Delete
+								</Button>
+							)}
+						</Mutation>
 					</ModalFooter>
 				</ModalDialog>
 			);

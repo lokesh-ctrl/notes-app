@@ -10,8 +10,8 @@ export default class Grid extends Component {
 
     renderGrid = () => {
         const children = [];
-        _.each(this.state.notes, item => {
-            children.push(<Note note={item}/>);
+        _.each(this.state.notes, noteData => {
+            children.push(<Note key={noteData.id} note={noteData}/>);
         });
         return children;
     };
