@@ -1,11 +1,19 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const noteSchema = new Schema({
-    title: String,
-    description: String,
-    isTask: Boolean,
-    isDeleted: Boolean
-});
+const NOTE_DEFINITION = {
+	title: {
+		type: String,
+		required: true
+	},
+	description: String,
+	isTask: Boolean,
+	isDeleted: Boolean
+};
 
-export const Note = mongoose.model("note", noteSchema);
+const noteSchema = new Schema(NOTE_DEFINITION);
 
+export const getSchemaDefinition = () => {
+	return NOTE_DEFINITION;
+};
+mongoose.set('useFindAndModify', false);
+export const Model = mongoose.model("note", noteSchema);

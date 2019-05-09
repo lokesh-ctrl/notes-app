@@ -1,8 +1,15 @@
 import mongoose, {Schema} from "mongoose";
 
-const taskSchema = new Schema({
-    title: String,
+const TASK_DEFINITION = {
+    title: {
+        type: String,
+        required: true
+    },
     isCompleted: Boolean
-});
+};
+const taskSchema = new Schema(TASK_DEFINITION);
 
-export const Task = mongoose.model("task", taskSchema);
+export const getSchemaDefinition = () => {
+    return TASK_DEFINITION;
+};
+export const Model = mongoose.model("task", taskSchema);
